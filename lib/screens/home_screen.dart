@@ -3,12 +3,27 @@ import 'package:algecit/widgets/drawer_widget.dart';
 import 'package:algecit/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          addData(context);
+        },
+        backgroundColor: primary,
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
       drawer: DrawerWidget(),
       appBar: AppBar(
         foregroundColor: Colors.white,
@@ -214,6 +229,93 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  String? selectedAction;
+
+  String? selectedTool;
+
+  final TextEditingController idController = TextEditingController();
+
+  final List<String> actions = ['Borrow', 'Return'];
+
+  final List<String> tools = ['Hammer', 'Wrench', 'Screwdriver', 'Drill'];
+
+  addData(context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Add Record'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Action Dropdown (Borrow/Return)
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: 'Type',
+                  border: OutlineInputBorder(),
+                ),
+                value: selectedAction,
+                items: actions.map((String action) {
+                  return DropdownMenuItem<String>(
+                    value: action,
+                    child: Text(action),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedAction = value;
+                  });
+                },
+              ),
+              SizedBox(height: 20),
+
+              // ID Number TextField
+              TextField(
+                controller: idController,
+                decoration: InputDecoration(
+                  labelText: 'Student ID Number',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              SizedBox(height: 20),
+
+              // Tools Dropdown
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: 'Select Tool',
+                  border: OutlineInputBorder(),
+                ),
+                value: selectedTool,
+                items: tools.map((String tool) {
+                  return DropdownMenuItem<String>(
+                    value: tool,
+                    child: Text(tool),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedTool = value;
+                  });
+                },
+              ),
+            ],
+          ),
+          actions: [
+            // Save Button
+            ElevatedButton(
+              onPressed: () {
+                // Save logic here
+                Navigator.pop(context); // Close dialog
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
