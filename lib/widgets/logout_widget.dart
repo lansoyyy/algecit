@@ -1,6 +1,7 @@
+import 'package:algecit/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
-logout(BuildContext context, Widget navigationRoute, String id) {
+logout(BuildContext context, Widget navigationRoute) {
   return showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -23,7 +24,10 @@ logout(BuildContext context, Widget navigationRoute, String id) {
                 ),
               ),
               MaterialButton(
-                onPressed: () async {},
+                onPressed: () async {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const LoginScreen()));
+                },
                 child: const Text(
                   'Continue',
                   style: TextStyle(
