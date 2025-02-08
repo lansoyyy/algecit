@@ -1,3 +1,4 @@
+import 'package:algecit/utils/colors.dart';
 import 'package:algecit/widgets/drawer_widget.dart';
 import 'package:algecit/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class HomeScreen extends StatelessWidget {
       drawer: DrawerWidget(),
       appBar: AppBar(
         foregroundColor: Colors.white,
-        backgroundColor: Colors.blue,
+        backgroundColor: primary,
         title: TextWidget(
           text: 'Dashboard',
           fontSize: 18,
