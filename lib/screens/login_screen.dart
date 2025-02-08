@@ -26,9 +26,12 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/logo.png',
-              height: 300,
+            CircleAvatar(
+              minRadius: 125,
+              maxRadius: 125,
+              child: Center(
+                child: TextWidget(text: 'Logo here', fontSize: 12),
+              ),
             ),
             const SizedBox(
               height: 20,

@@ -27,16 +27,14 @@ class DrawerWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
+                  height: 50,
+                  width: 50,
                   decoration: BoxDecoration(
                       border: Border.all(color: primary!),
                       shape: BoxShape.circle,
-                      color: Colors.white),
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.5),
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      height: 35,
-                    ),
+                      color: Colors.purple[100]),
+                  child: Center(
+                    child: TextWidget(text: 'Logo here', fontSize: 8),
                   ),
                 ),
                 TextWidget(
