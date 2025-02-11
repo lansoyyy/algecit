@@ -30,15 +30,17 @@ class DrawerWidget extends StatelessWidget {
                   height: 50,
                   width: 50,
                   decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/logo.png',
+                          ),
+                          fit: BoxFit.cover),
                       border: Border.all(color: primary!),
                       shape: BoxShape.circle,
-                      color: Colors.purple[100]),
-                  child: Center(
-                    child: TextWidget(text: 'Logo here', fontSize: 8),
-                  ),
+                      color: Colors.white),
                 ),
                 TextWidget(
-                  text: 'ALGECIT',
+                  text: 'INVENTRACK',
                   fontFamily: 'Bold',
                   fontSize: 16,
                 ),

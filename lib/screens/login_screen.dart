@@ -27,10 +27,10 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              minRadius: 125,
-              maxRadius: 125,
-              child: Center(
-                child: TextWidget(text: 'Logo here', fontSize: 12),
+              minRadius: 130,
+              maxRadius: 130,
+              backgroundImage: AssetImage(
+                'assets/images/logo.png',
               ),
             ),
             const SizedBox(
