@@ -324,7 +324,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     }
 
                                     final toolData = snapshot.requireData;
-                                    return toolData.docs.length % 2 != 0
+
+                                    return toolData.docs.length % 2 == 0
                                         ? TextWidget(
                                             text: 'N/A',
                                             fontSize: 12,
@@ -334,8 +335,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         : StreamBuilder<DocumentSnapshot>(
                                             stream: FirebaseFirestore.instance
                                                 .collection('Students')
-                                                .doc(toolData.docs[i]
-                                                    ['studentId'])
+                                                .doc(toolData
+                                                    .docs.first['StudentID'])
                                                 .snapshots(),
                                             builder: (context,
                                                 AsyncSnapshot<DocumentSnapshot>
@@ -352,6 +353,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 return const Drawer();
                                               }
                                               dynamic userData = snapshot.data;
+
                                               return TextWidget(
                                                 text: userData['name'],
                                                 fontSize: 12,
