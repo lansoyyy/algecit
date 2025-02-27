@@ -1,7 +1,11 @@
+import 'package:algecit/services/add_tool.dart';
 import 'package:algecit/utils/colors.dart';
 import 'package:algecit/widgets/drawer_widget.dart';
 import 'package:algecit/widgets/text_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
+import 'package:intl/intl.dart';
 
 class EquipmentsTab extends StatefulWidget {
   const EquipmentsTab({super.key});
@@ -11,9 +15,10 @@ class EquipmentsTab extends StatefulWidget {
 }
 
 class _EquipmentsTabState extends State<EquipmentsTab> {
-  String? selectedValue;
-  final TextEditingController _searchController = TextEditingController();
-  final List<String> dropdownItems = ['Available', 'Unavailable'];
+  final messageController = TextEditingController();
+
+  String filter = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +53,12 @@ class _EquipmentsTabState extends State<EquipmentsTab> {
                   // Search Bar
                   Expanded(
                     child: TextField(
-                      controller: _searchController,
+                      controller: messageController,
+                      onChanged: (value) {
+                        setState(() {
+                          filter = value;
+                        });
+                      },
                       decoration: InputDecoration(
                         hintText: 'Search Tool..',
                         prefixIcon: Icon(Icons.search),
@@ -58,99 +68,138 @@ class _EquipmentsTabState extends State<EquipmentsTab> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 10), // Spacing
 
                   // Dropdown Button
-                  DropdownButton<String>(
-                    value: selectedValue,
-                    hint: Text('Select Status'),
-                    items: dropdownItems.map((String item) {
-                      return DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(item),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedValue = newValue;
-                      });
-                    },
-                  ),
                 ],
               ),
               SizedBox(
                 height: 20,
               ),
-              DataTable(border: TableBorder.all(), columns: [
-                DataColumn(
-                  label: TextWidget(
-                    text: 'ID',
-                    fontSize: 14,
-                    fontFamily: 'Bold',
-                    color: Colors.black,
-                  ),
-                ),
-                DataColumn(
-                  label: TextWidget(
-                    text: 'Tool',
-                    fontSize: 14,
-                    fontFamily: 'Bold',
-                    color: Colors.black,
-                  ),
-                ),
-                DataColumn(
-                  label: TextWidget(
-                    text: 'Date\nAdded',
-                    fontSize: 14,
-                    fontFamily: 'Bold',
-                    color: Colors.black,
-                  ),
-                ),
-                DataColumn(
-                  label: TextWidget(
-                    text: 'Status',
-                    fontSize: 14,
-                    fontFamily: 'Bold',
-                    color: Colors.black,
-                  ),
-                ),
-              ], rows: [
-                for (int i = 0; i < 10; i++)
-                  DataRow(cells: [
-                    DataCell(
-                      TextWidget(
-                        text: '${i + 1}',
-                        fontSize: 12,
-                        fontFamily: 'Regular',
-                        color: Colors.black,
+              StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Tools')
+                      .where('name',
+                          isGreaterThanOrEqualTo:
+                              toBeginningOfSentenceCase(filter))
+                      .where('name',
+                          isLessThan: '${toBeginningOfSentenceCase(filter)}z')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      print(snapshot.error);
+                      return const Center(child: Text('Error'));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.black,
+                          ),
+                        ),
+                      );
+                    }
+
+                    final data = snapshot.requireData;
+                    return DataTable(border: TableBorder.all(), columns: [
+                      DataColumn(
+                        label: TextWidget(
+                          text: 'ID',
+                          fontSize: 14,
+                          fontFamily: 'Bold',
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      TextWidget(
-                        text: 'Data',
-                        fontSize: 12,
-                        fontFamily: 'Regular',
-                        color: Colors.black,
+                      DataColumn(
+                        label: TextWidget(
+                          text: 'Tool',
+                          fontSize: 14,
+                          fontFamily: 'Bold',
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      TextWidget(
-                        text: 'January 01, 2001',
-                        fontSize: 12,
-                        fontFamily: 'Regular',
-                        color: Colors.black,
+                      DataColumn(
+                        label: TextWidget(
+                          text: 'Date\nAdded',
+                          fontSize: 14,
+                          fontFamily: 'Bold',
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      TextWidget(
-                        text: 'Available',
-                        fontSize: 12,
-                        fontFamily: 'Regular',
-                        color: Colors.black,
+                      DataColumn(
+                        label: TextWidget(
+                          text: 'Status',
+                          fontSize: 14,
+                          fontFamily: 'Bold',
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                  ])
-              ])
+                    ], rows: [
+                      for (int i = 0; i < data.docs.length; i++)
+                        DataRow(cells: [
+                          DataCell(
+                            TextWidget(
+                              text: '${i + 1}',
+                              fontSize: 12,
+                              fontFamily: 'Regular',
+                              color: Colors.black,
+                            ),
+                          ),
+                          DataCell(
+                            TextWidget(
+                              text: data.docs[i]['name'],
+                              fontSize: 12,
+                              fontFamily: 'Regular',
+                              color: Colors.black,
+                            ),
+                          ),
+                          DataCell(
+                            TextWidget(
+                              text: DateFormat.yMMMd()
+                                  .format(data.docs[i]['dateTime'].toDate()),
+                              fontSize: 12,
+                              fontFamily: 'Regular',
+                              color: Colors.black,
+                            ),
+                          ),
+                          DataCell(
+                            StreamBuilder<QuerySnapshot>(
+                                stream: FirebaseFirestore.instance
+                                    .collection(data.docs[i]['id'])
+                                    .snapshots(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasError) {
+                                    print(snapshot.error);
+                                    return const Center(child: Text('Error'));
+                                  }
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Padding(
+                                      padding: EdgeInsets.only(top: 50),
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    );
+                                  }
+
+                                  final data = snapshot.requireData;
+                                  return TextWidget(
+                                    text: data.docs.length % 2 == 0
+                                        ? 'Available'
+                                        : 'Unavailable',
+                                    fontSize: 12,
+                                    fontFamily: 'Regular',
+                                    color: Colors.black,
+                                  );
+                                }),
+                          ),
+                        ])
+                    ]);
+                  })
             ],
           ),
         ),
@@ -197,7 +246,10 @@ class _EquipmentsTabState extends State<EquipmentsTab> {
             // Save Button
             ElevatedButton(
               onPressed: () {
-                // Save logic here
+                addTools(nameController.text, idController.text);
+
+                nameController.clear();
+                idController.clear(); // Save logic here
                 Navigator.pop(context); // Close dialog
               },
               child: Text('Save'),
