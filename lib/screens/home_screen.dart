@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: Colors.black,
                               ),
                               TextWidget(
-                                text: 'Numbers of students with records',
+                                text: 'Numbers of students',
                                 fontSize: 11,
                                 fontFamily: 'Regular',
                                 color: Colors.grey,
@@ -94,62 +94,53 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Card(
-                      elevation: 3,
-                      color: Colors.white,
-                      child: SizedBox(
-                        height: 130,
-                        width: 165,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextWidget(
-                              text: '105',
-                              fontSize: 60,
-                              fontFamily: 'Bold',
-                              color: Colors.black,
+                Card(
+                  color: Colors.white,
+                  elevation: 3,
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 150,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.blue,
+                            minRadius: 50,
+                            maxRadius: 50,
+                            child: Icon(
+                              Icons.construction_outlined,
+                              color: Colors.white,
+                              size: 60,
                             ),
-                            TextWidget(
-                              text: 'Number of Tools',
-                              fontSize: 11,
-                              fontFamily: 'Regular',
-                              color: Colors.grey,
-                            ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              TextWidget(
+                                text: '787',
+                                fontSize: 75,
+                                fontFamily: 'Bold',
+                                color: Colors.black,
+                              ),
+                              TextWidget(
+                                text: 'Numbers of Tools',
+                                fontSize: 11,
+                                fontFamily: 'Regular',
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    Card(
-                      elevation: 3,
-                      color: Colors.white,
-                      child: SizedBox(
-                        height: 130,
-                        width: 165,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextWidget(
-                              text: '69',
-                              fontSize: 60,
-                              fontFamily: 'Bold',
-                              color: Colors.black,
-                            ),
-                            TextWidget(
-                              text: 'Tools borrowed',
-                              fontSize: 11,
-                              fontFamily: 'Regular',
-                              color: Colors.grey,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
                 SizedBox(
                   height: 20,

@@ -17,6 +17,16 @@ class _EquipmentsTabState extends State<EquipmentsTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: primary,
+        onPressed: () {
+          addData(context);
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
       drawer: DrawerWidget(),
       appBar: AppBar(
         foregroundColor: Colors.white,
@@ -145,6 +155,56 @@ class _EquipmentsTabState extends State<EquipmentsTab> {
           ),
         ),
       ),
+    );
+  }
+
+  final TextEditingController idController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+
+  addData(context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Add Equipment'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Action Dropdown (Borrow/Return)
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  labelText: 'Tool Name',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              SizedBox(height: 20),
+
+              // ID Number TextField
+              TextField(
+                controller: idController,
+                decoration: InputDecoration(
+                  labelText: 'Tool ID',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              SizedBox(height: 20),
+            ],
+          ),
+          actions: [
+            // Save Button
+            ElevatedButton(
+              onPressed: () {
+                // Save logic here
+                Navigator.pop(context); // Close dialog
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
