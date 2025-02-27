@@ -3,6 +3,7 @@ import 'package:algecit/utils/colors.dart';
 import 'package:algecit/widgets/button_widget.dart';
 import 'package:algecit/widgets/text_widget.dart';
 import 'package:algecit/widgets/textfield_widget.dart';
+import 'package:algecit/widgets/toast_widget.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -72,8 +73,13 @@ class _LoginScreenState extends State<LoginScreen> {
               radius: 10,
               label: 'Login',
               onPressed: () async {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => HomeScreen()));
+                if (email.text == 'admin_username' &&
+                    password.text == 'admin_password') {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                } else {
+                  showToast('Cannot proceed! Invalid credentials.');
+                }
               },
             ),
             // const SizedBox(
