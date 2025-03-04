@@ -214,157 +214,164 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
 
                       final data = snapshot.requireData;
-                      return DataTable(border: TableBorder.all(), columns: [
-                        DataColumn(
-                          label: TextWidget(
-                            text: 'ID',
-                            fontSize: 14,
-                            fontFamily: 'Bold',
-                            color: Colors.black,
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(border: TableBorder.all(), columns: [
+                          DataColumn(
+                            label: TextWidget(
+                              text: 'ID',
+                              fontSize: 14,
+                              fontFamily: 'Bold',
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                        DataColumn(
-                          label: TextWidget(
-                            text: 'Tool',
-                            fontSize: 14,
-                            fontFamily: 'Bold',
-                            color: Colors.black,
+                          DataColumn(
+                            label: TextWidget(
+                              text: 'Tool',
+                              fontSize: 14,
+                              fontFamily: 'Bold',
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                        DataColumn(
-                          label: TextWidget(
-                            text: 'Status',
-                            fontSize: 14,
-                            fontFamily: 'Bold',
-                            color: Colors.black,
+                          DataColumn(
+                            label: TextWidget(
+                              text: 'Status',
+                              fontSize: 14,
+                              fontFamily: 'Bold',
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                        DataColumn(
-                          label: TextWidget(
-                            text: 'Student',
-                            fontSize: 14,
-                            fontFamily: 'Bold',
-                            color: Colors.black,
+                          DataColumn(
+                            label: TextWidget(
+                              text: 'Student',
+                              fontSize: 14,
+                              fontFamily: 'Bold',
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                      ], rows: [
-                        for (int i = 0; i < data.docs.length; i++)
-                          DataRow(cells: [
-                            DataCell(
-                              TextWidget(
-                                text: '${i + 1}',
-                                fontSize: 12,
-                                fontFamily: 'Regular',
-                                color: Colors.black,
+                        ], rows: [
+                          for (int i = 0; i < data.docs.length; i++)
+                            DataRow(cells: [
+                              DataCell(
+                                TextWidget(
+                                  text: '${i + 1}',
+                                  fontSize: 12,
+                                  fontFamily: 'Regular',
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                            DataCell(
-                              TextWidget(
-                                text: data.docs[i]['name'],
-                                fontSize: 12,
-                                fontFamily: 'Regular',
-                                color: Colors.black,
+                              DataCell(
+                                TextWidget(
+                                  text: data.docs[i]['name'],
+                                  fontSize: 12,
+                                  fontFamily: 'Regular',
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                            DataCell(
-                              StreamBuilder<QuerySnapshot>(
-                                  stream: FirebaseFirestore.instance
-                                      .collection(data.docs[i]['id'])
-                                      .snapshots(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    if (snapshot.hasError) {
-                                      print(snapshot.error);
-                                      return const Center(child: Text('Error'));
-                                    }
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const Padding(
-                                        padding: EdgeInsets.only(top: 50),
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            color: Colors.black,
+                              DataCell(
+                                StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection(data.docs[i]['id'])
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        print(snapshot.error);
+                                        return const Center(
+                                            child: Text('Error'));
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Padding(
+                                          padding: EdgeInsets.only(top: 50),
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              color: Colors.black,
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    }
+                                        );
+                                      }
 
-                                    final data = snapshot.requireData;
-                                    return TextWidget(
-                                      text: data.docs.length % 2 == 0
-                                          ? 'Available'
-                                          : 'Unavailable',
-                                      fontSize: 12,
-                                      fontFamily: 'Regular',
-                                      color: Colors.black,
-                                    );
-                                  }),
-                            ),
-                            DataCell(
-                              StreamBuilder<QuerySnapshot>(
-                                  stream: FirebaseFirestore.instance
-                                      .collection(data.docs[i]['id'])
-                                      .snapshots(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    if (snapshot.hasError) {
-                                      print(snapshot.error);
-                                      return const Center(child: Text('Error'));
-                                    }
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const Padding(
-                                        padding: EdgeInsets.only(top: 50),
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            color: Colors.black,
+                                      final data = snapshot.requireData;
+                                      return TextWidget(
+                                        text: data.docs.length % 2 == 0
+                                            ? 'Available'
+                                            : 'Unavailable',
+                                        fontSize: 12,
+                                        fontFamily: 'Regular',
+                                        color: Colors.black,
+                                      );
+                                    }),
+                              ),
+                              DataCell(
+                                StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection(data.docs[i]['id'])
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        print(snapshot.error);
+                                        return const Center(
+                                            child: Text('Error'));
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Padding(
+                                          padding: EdgeInsets.only(top: 50),
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              color: Colors.black,
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    }
+                                        );
+                                      }
 
-                                    final toolData = snapshot.requireData;
+                                      final toolData = snapshot.requireData;
 
-                                    return toolData.docs.length % 2 == 0
-                                        ? TextWidget(
-                                            text: 'N/A',
-                                            fontSize: 12,
-                                            fontFamily: 'Regular',
-                                            color: Colors.black,
-                                          )
-                                        : StreamBuilder<DocumentSnapshot>(
-                                            stream: FirebaseFirestore.instance
-                                                .collection('Students')
-                                                .doc(toolData
-                                                    .docs.first['StudentID'])
-                                                .snapshots(),
-                                            builder: (context,
-                                                AsyncSnapshot<DocumentSnapshot>
-                                                    snapshot) {
-                                              if (!snapshot.hasData) {
-                                                return const Drawer();
-                                              } else if (snapshot.hasError) {
-                                                return const Center(
-                                                    child: Text(
-                                                        'Something went wrong'));
-                                              } else if (snapshot
-                                                      .connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return const Drawer();
-                                              }
-                                              dynamic userData = snapshot.data;
+                                      return toolData.docs.length % 2 == 0
+                                          ? TextWidget(
+                                              text: 'N/A',
+                                              fontSize: 12,
+                                              fontFamily: 'Regular',
+                                              color: Colors.black,
+                                            )
+                                          : StreamBuilder<DocumentSnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection('Students')
+                                                  .doc(toolData
+                                                      .docs.first['StudentID'])
+                                                  .snapshots(),
+                                              builder: (context,
+                                                  AsyncSnapshot<
+                                                          DocumentSnapshot>
+                                                      snapshot) {
+                                                if (!snapshot.hasData) {
+                                                  return const Drawer();
+                                                } else if (snapshot.hasError) {
+                                                  return const Center(
+                                                      child: Text(
+                                                          'Something went wrong'));
+                                                } else if (snapshot
+                                                        .connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return const Drawer();
+                                                }
+                                                dynamic userData =
+                                                    snapshot.data;
 
-                                              return TextWidget(
-                                                text: userData['name'],
-                                                fontSize: 12,
-                                                fontFamily: 'Regular',
-                                                color: Colors.black,
-                                              );
-                                            });
-                                  }),
-                            ),
-                          ])
-                      ]);
+                                                return TextWidget(
+                                                  text: userData['name'],
+                                                  fontSize: 12,
+                                                  fontFamily: 'Regular',
+                                                  color: Colors.black,
+                                                );
+                                              });
+                                    }),
+                              ),
+                            ])
+                        ]),
+                      );
                     })
               ],
             ),

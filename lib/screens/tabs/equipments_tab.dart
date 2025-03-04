@@ -102,103 +102,128 @@ class _EquipmentsTabState extends State<EquipmentsTab> {
                     }
 
                     final data = snapshot.requireData;
-                    return DataTable(border: TableBorder.all(), columns: [
-                      DataColumn(
-                        label: TextWidget(
-                          text: 'ID',
-                          fontSize: 14,
-                          fontFamily: 'Bold',
-                          color: Colors.black,
-                        ),
-                      ),
-                      DataColumn(
-                        label: TextWidget(
-                          text: 'Tool',
-                          fontSize: 14,
-                          fontFamily: 'Bold',
-                          color: Colors.black,
-                        ),
-                      ),
-                      DataColumn(
-                        label: TextWidget(
-                          text: 'Date\nAdded',
-                          fontSize: 14,
-                          fontFamily: 'Bold',
-                          color: Colors.black,
-                        ),
-                      ),
-                      DataColumn(
-                        label: TextWidget(
-                          text: 'Status',
-                          fontSize: 14,
-                          fontFamily: 'Bold',
-                          color: Colors.black,
-                        ),
-                      ),
-                    ], rows: [
-                      for (int i = 0; i < data.docs.length; i++)
-                        DataRow(cells: [
-                          DataCell(
-                            TextWidget(
-                              text: '${i + 1}',
-                              fontSize: 12,
-                              fontFamily: 'Regular',
-                              color: Colors.black,
-                            ),
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(border: TableBorder.all(), columns: [
+                        DataColumn(
+                          label: TextWidget(
+                            text: 'ID',
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.black,
                           ),
-                          DataCell(
-                            TextWidget(
-                              text: data.docs[i]['name'],
-                              fontSize: 12,
-                              fontFamily: 'Regular',
-                              color: Colors.black,
-                            ),
+                        ),
+                        DataColumn(
+                          label: TextWidget(
+                            text: 'Tool',
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.black,
                           ),
-                          DataCell(
-                            TextWidget(
-                              text: DateFormat.yMMMd()
-                                  .format(data.docs[i]['dateTime'].toDate()),
-                              fontSize: 12,
-                              fontFamily: 'Regular',
-                              color: Colors.black,
-                            ),
+                        ),
+                        DataColumn(
+                          label: TextWidget(
+                            text: 'Date\nAdded',
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.black,
                           ),
-                          DataCell(
-                            StreamBuilder<QuerySnapshot>(
-                                stream: FirebaseFirestore.instance
-                                    .collection(data.docs[i]['id'])
-                                    .snapshots(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                                  if (snapshot.hasError) {
-                                    print(snapshot.error);
-                                    return const Center(child: Text('Error'));
-                                  }
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const Padding(
-                                      padding: EdgeInsets.only(top: 50),
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          color: Colors.black,
+                        ),
+                        DataColumn(
+                          label: TextWidget(
+                            text: 'Status',
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.black,
+                          ),
+                        ),
+                        DataColumn(
+                          label: TextWidget(
+                            text: 'Option',
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.black,
+                          ),
+                        ),
+                      ], rows: [
+                        for (int i = 0; i < data.docs.length; i++)
+                          DataRow(cells: [
+                            DataCell(
+                              TextWidget(
+                                text: '${i + 1}',
+                                fontSize: 12,
+                                fontFamily: 'Regular',
+                                color: Colors.black,
+                              ),
+                            ),
+                            DataCell(
+                              TextWidget(
+                                text: data.docs[i]['name'],
+                                fontSize: 12,
+                                fontFamily: 'Regular',
+                                color: Colors.black,
+                              ),
+                            ),
+                            DataCell(
+                              TextWidget(
+                                text: DateFormat.yMMMd()
+                                    .format(data.docs[i]['dateTime'].toDate()),
+                                fontSize: 12,
+                                fontFamily: 'Regular',
+                                color: Colors.black,
+                              ),
+                            ),
+                            DataCell(
+                              StreamBuilder<QuerySnapshot>(
+                                  stream: FirebaseFirestore.instance
+                                      .collection(data.docs[i]['id'])
+                                      .snapshots(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasError) {
+                                      print(snapshot.error);
+                                      return const Center(child: Text('Error'));
+                                    }
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Padding(
+                                        padding: EdgeInsets.only(top: 50),
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.black,
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  }
+                                      );
+                                    }
 
-                                  final data = snapshot.requireData;
-                                  return TextWidget(
-                                    text: data.docs.length % 2 == 0
-                                        ? 'Available'
-                                        : 'Unavailable',
-                                    fontSize: 12,
-                                    fontFamily: 'Regular',
-                                    color: Colors.black,
-                                  );
-                                }),
-                          ),
-                        ])
-                    ]);
+                                    final data = snapshot.requireData;
+                                    return TextWidget(
+                                      text: data.docs.length % 2 == 0
+                                          ? 'Available'
+                                          : 'Unavailable',
+                                      fontSize: 12,
+                                      fontFamily: 'Regular',
+                                      color: Colors.black,
+                                    );
+                                  }),
+                            ),
+                            DataCell(
+                              IconButton(
+                                onPressed: () async {
+                                  await FirebaseFirestore.instance
+                                      .collection('Tools')
+                                      .doc(data.docs[i].id)
+                                      .delete();
+                                },
+                                icon: Icon(
+                                  Icons.delete_outline,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ])
+                      ]),
+                    );
                   })
             ],
           ),
@@ -226,7 +251,6 @@ class _EquipmentsTabState extends State<EquipmentsTab> {
                   labelText: 'Tool Name',
                   border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.number,
               ),
               SizedBox(height: 20),
 

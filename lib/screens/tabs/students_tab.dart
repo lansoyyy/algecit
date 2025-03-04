@@ -101,60 +101,85 @@ class _StudentsTabState extends State<StudentsTab> {
                     }
 
                     final data = snapshot.requireData;
-                    return DataTable(border: TableBorder.all(), columns: [
-                      DataColumn(
-                        label: TextWidget(
-                          text: 'ID Number',
-                          fontSize: 14,
-                          fontFamily: 'Bold',
-                          color: Colors.black,
-                        ),
-                      ),
-                      DataColumn(
-                        label: TextWidget(
-                          text: 'Name',
-                          fontSize: 14,
-                          fontFamily: 'Bold',
-                          color: Colors.black,
-                        ),
-                      ),
-                      DataColumn(
-                        label: TextWidget(
-                          text: 'Contact No.',
-                          fontSize: 14,
-                          fontFamily: 'Bold',
-                          color: Colors.black,
-                        ),
-                      ),
-                    ], rows: [
-                      for (int i = 0; i < data.docs.length; i++)
-                        DataRow(cells: [
-                          DataCell(
-                            TextWidget(
-                              text: data.docs[i]['id'],
-                              fontSize: 12,
-                              fontFamily: 'Regular',
-                              color: Colors.black,
-                            ),
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(border: TableBorder.all(), columns: [
+                        DataColumn(
+                          label: TextWidget(
+                            text: 'ID Number',
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.black,
                           ),
-                          DataCell(
-                            TextWidget(
-                              text: data.docs[i]['name'],
-                              fontSize: 12,
-                              fontFamily: 'Regular',
-                              color: Colors.black,
-                            ),
+                        ),
+                        DataColumn(
+                          label: TextWidget(
+                            text: 'Name',
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.black,
                           ),
-                          DataCell(
-                            TextWidget(
-                              text: data.docs[i]['number'],
-                              fontSize: 12,
-                              fontFamily: 'Regular',
-                              color: Colors.black,
-                            ),
+                        ),
+                        DataColumn(
+                          label: TextWidget(
+                            text: 'Contact No.',
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.black,
                           ),
-                        ])
-                    ]);
+                        ),
+                        DataColumn(
+                          label: TextWidget(
+                            text: 'Option',
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.black,
+                          ),
+                        ),
+                      ], rows: [
+                        for (int i = 0; i < data.docs.length; i++)
+                          DataRow(cells: [
+                            DataCell(
+                              TextWidget(
+                                text: data.docs[i]['id'],
+                                fontSize: 12,
+                                fontFamily: 'Regular',
+                                color: Colors.black,
+                              ),
+                            ),
+                            DataCell(
+                              TextWidget(
+                                text: data.docs[i]['name'],
+                                fontSize: 12,
+                                fontFamily: 'Regular',
+                                color: Colors.black,
+                              ),
+                            ),
+                            DataCell(
+                              TextWidget(
+                                text: data.docs[i]['number'],
+                                fontSize: 12,
+                                fontFamily: 'Regular',
+                                color: Colors.black,
+                              ),
+                            ),
+                            DataCell(
+                              IconButton(
+                                onPressed: () async {
+                                  await FirebaseFirestore.instance
+                                      .collection('Students')
+                                      .doc(data.docs[i].id)
+                                      .delete();
+                                },
+                                icon: Icon(
+                                  Icons.delete_outline,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ])
+                      ]),
+                    );
                   })
             ],
           ),
@@ -183,7 +208,6 @@ class _StudentsTabState extends State<StudentsTab> {
                   labelText: 'Student Name',
                   border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.number,
               ),
               SizedBox(height: 20),
 
