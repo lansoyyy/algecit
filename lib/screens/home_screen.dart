@@ -3,6 +3,7 @@ import 'package:algecit/widgets/drawer_widget.dart';
 import 'package:algecit/widgets/text_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -249,6 +250,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.black,
                             ),
                           ),
+                          DataColumn(
+                            label: TextWidget(
+                              text: 'Date and Time',
+                              fontSize: 14,
+                              fontFamily: 'Bold',
+                              color: Colors.black,
+                            ),
+                          ),
                         ], rows: [
                           for (int i = 0; i < data.docs.length; i++)
                             DataRow(cells: [
@@ -340,7 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               stream: FirebaseFirestore.instance
                                                   .collection('Students')
                                                   .doc(toolData
-                                                      .docs.first['StudentID'])
+                                                      .docs.last['StudentID'])
                                                   .snapshots(),
                                               builder: (context,
                                                   AsyncSnapshot<
@@ -367,6 +376,52 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   color: Colors.black,
                                                 );
                                               });
+                                    }),
+                              ),
+                              DataCell(
+                                StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection(data.docs[i]['id'])
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        print(snapshot.error);
+                                        return const Center(
+                                            child: Text('Error'));
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Padding(
+                                          padding: EdgeInsets.only(top: 50),
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        );
+                                      }
+
+                                      final toolData = snapshot.requireData;
+
+                                      return toolData.docs.length % 2 == 0
+                                          ? TextWidget(
+                                              text: 'N/A',
+                                              fontSize: 12,
+                                              fontFamily: 'Regular',
+                                              color: Colors.black,
+                                            )
+                                          : TextWidget(
+                                              text: DateFormat(
+                                                      "yyyy-MM-dd hh:mm:ss a")
+                                                  .format(DateFormat(
+                                                          "dd-MM-yyyy : HH:mm:ss")
+                                                      .parse(toolData.docs[i]
+                                                          ['TimeStamp'])),
+                                              fontSize: 12,
+                                              fontFamily: 'Regular',
+                                              color: Colors.black,
+                                            );
                                     }),
                               ),
                             ])
