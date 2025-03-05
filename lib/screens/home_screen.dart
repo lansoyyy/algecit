@@ -417,8 +417,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .format(
                                                 DateFormat(
                                                         "dd-MM-yyyy : HH:mm:ss")
-                                                    .parse(toolData.docs[i]
-                                                        ['TimeStamp'])
+                                                    .parse(toolData
+                                                        .docs.last['TimeStamp'])
                                                     .toUtc()
                                                     .add(Duration(
                                                         hours:
