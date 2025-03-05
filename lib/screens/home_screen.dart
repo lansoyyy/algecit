@@ -414,10 +414,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                           : TextWidget(
                                               text: DateFormat(
                                                       "yyyy-MM-dd hh:mm:ss a")
-                                                  .format(DateFormat(
-                                                          "dd-MM-yyyy : HH:mm:ss")
-                                                      .parse(toolData.docs[i]
-                                                          ['TimeStamp'])),
+                                                  .format(
+                                                DateFormat(
+                                                        "dd-MM-yyyy : HH:mm:ss")
+                                                    .parse(toolData.docs[i]
+                                                        ['TimeStamp'])
+                                                    .toUtc()
+                                                    .add(Duration(
+                                                        hours:
+                                                            8)), // Convert to UTC+8
+                                              ),
                                               fontSize: 12,
                                               fontFamily: 'Regular',
                                               color: Colors.black,
