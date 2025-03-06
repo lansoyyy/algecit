@@ -419,7 +419,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         "dd-MM-yyyy : HH:mm:ss")
                                                     .parse(toolData
                                                         .docs.last['TimeStamp'])
-                                                    .toUtc()
                                                     .add(Duration(
                                                         hours:
                                                             8)), // Convert to UTC+8
