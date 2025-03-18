@@ -417,7 +417,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .format(DateFormat(
                                                           "MM-dd-yyyy : HH:mm:ss")
                                                       .parse(toolData.docs
-                                                          .last['TimeStamp'])),
+                                                          .last['TimeStamp'])
+                                                      .add(Duration(hours: 8))),
                                               fontSize: 12,
                                               fontFamily: 'Regular',
                                               color: Colors.black,
