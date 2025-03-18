@@ -1,4 +1,3 @@
-import 'package:algecit/screens/history_screen.dart';
 import 'package:algecit/services/add_student.dart';
 import 'package:algecit/utils/colors.dart';
 import 'package:algecit/widgets/drawer_widget.dart';
@@ -143,10 +142,10 @@ class _StudentsTabState extends State<StudentsTab> {
                             DataCell(
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => HistoryScreen(
-                                            id: data.docs[i]['id'],
-                                          )));
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) => HistoryScreen(
+                                  //           id: data.docs[i]['id'],
+                                  //         )));
                                 },
                                 child: TextWidget(
                                   text: data.docs[i]['id'],
@@ -159,10 +158,10 @@ class _StudentsTabState extends State<StudentsTab> {
                             DataCell(
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => HistoryScreen(
-                                            id: data.docs[i]['id'],
-                                          )));
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) => HistoryScreen(
+                                  //           id: data.docs[i]['id'],
+                                  //         )));
                                 },
                                 child: TextWidget(
                                   text: data.docs[i]['name'],
@@ -175,10 +174,10 @@ class _StudentsTabState extends State<StudentsTab> {
                             DataCell(
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => HistoryScreen(
-                                            id: data.docs[i]['id'],
-                                          )));
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) => HistoryScreen(
+                                  //           id: data.docs[i]['id'],
+                                  //         )));
                                 },
                                 child: TextWidget(
                                   text: data.docs[i]['number'],
